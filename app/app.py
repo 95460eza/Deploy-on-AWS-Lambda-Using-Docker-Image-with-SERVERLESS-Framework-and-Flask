@@ -101,8 +101,8 @@ def lambda_handler(event, context):
     except Exception as e:
 
         # Log the exception
-        logging.error("An error HAS occurred: %s", str(e))
         logging.info("Lambda Event: %s", event)
+        logging.error("An error HAS occurred: %s", str(e))
 
         # Handle exceptions and return an error response if needed
         return {
