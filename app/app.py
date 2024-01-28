@@ -35,7 +35,7 @@ def lambda_handler(event, context):
         # wsgi_env = event.get('wsgi_environ', {})
         # wsgi_env = event['wsgi_environ']
         wsgi_env = {
-            'wsgi.version': event['wsgi.version'],
+            '-': event['wsgi.version'],
             'wsgi.url_scheme': event['wsgi.url_scheme'],
             'wsgi.input': event['wsgi.input'],
             'wsgi.errors': event['wsgi.errors'],
@@ -102,6 +102,7 @@ def lambda_handler(event, context):
 
         # Log the exception
         logging.info("Lambda Event: %s", event)
+        logging.error("An error HAS occurred: %s", event)
         logging.error("An error HAS occurred: %s", str(e))
 
         # Handle exceptions and return an error response if needed
