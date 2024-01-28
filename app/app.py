@@ -38,24 +38,7 @@ def lambda_handler(event, context):
             # 'wsgi.version': event['wsgi.version'],
             'wsgi.version': (1, 0),  # Use a default version
             'wsgi.url_scheme': event['headers']['CloudFront-Forwarded-Proto'],
-            'wsgi.input': event['body'],
-            #'wsgi.errors': sys.stderr,  # Use sys.stderr or an appropriate file-like object
-            #'wsgi.errors': event['wsgi.errors'],
-            'wsgi.multiprocess': False,
-            'wsgi.multithread': False,
-            'wsgi.run_once': False,
-            'REQUEST_METHOD': event['httpMethod'],
-            'SCRIPT_NAME': event['requestContext']['path'],
-            'PATH_INFO': event['path'],
-            'QUERY_STRING': event['queryStringParameters'],
-            'SERVER_NAME': event['headers']['Host'],
-            'SERVER_PORT': event['headers']['X-Forwarded-Port'],
-            'SERVER_PROTOCOL': event['headers']['X-Amzn-Trace-Id'],
-            'HTTP_ACCEPT': event['headers']['Accept'],
-            'HTTP_ACCEPT_ENCODING': event['headers']['Accept-Encoding'],
-            'HTTP_USER_AGENT': event['headers']['User-Agent'],
-            'CONTENT_TYPE': event['headers'].get('Content-Type', ''),
-            'CONTENT_LENGTH': event['headers'].get('Content-Length', ''),
+
             # Add more relevant headers as needed
         }
 
