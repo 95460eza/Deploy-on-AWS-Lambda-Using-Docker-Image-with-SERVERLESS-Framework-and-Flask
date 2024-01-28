@@ -32,26 +32,26 @@ def lambda_handler(event, context):
     try:
         # wsgi_env = event.get('wsgi_environ', {})
         # wsgi_env = event['wsgi_environ']
-        wsgi_env = {
-            'wsgi.version': event['wsgi.version'],
-            'wsgi.url_scheme': event['wsgi.url_scheme'],
-            'wsgi.input': event['wsgi.input'],
-            'wsgi.errors': event['wsgi.errors'],
-            'wsgi.multiprocess': event['wsgi.multiprocess'],
-            'wsgi.multithread': event['wsgi.multithread'],
-            'wsgi.run_once': event['wsgi.run_once'],
-            'REQUEST_METHOD': event['REQUEST_METHOD'],
-            'SCRIPT_NAME': event['SCRIPT_NAME'],
-            'PATH_INFO': event['PATH_INFO'],
-            'QUERY_STRING': event['QUERY_STRING'],
-            'SERVER_NAME': event['SERVER_NAME'],
-            'SERVER_PORT': event['SERVER_PORT'],
-            'SERVER_PROTOCOL': event['SERVER_PROTOCOL'],
-            'HTTP_ACCEPT': event['HTTP_ACCEPT'],
-            'HTTP_ACCEPT_ENCODING': event['HTTP_ACCEPT_ENCODING'],
-            'HTTP_USER_AGENT': event['HTTP_USER_AGENT']
-            # Add more relevant headers as needed
-        }
+        # wsgi_env = {
+        #     'wsgi.version': event['wsgi.version'],
+        #     'wsgi.url_scheme': event['wsgi.url_scheme'],
+        #     'wsgi.input': event['wsgi.input'],
+        #     'wsgi.errors': event['wsgi.errors'],
+        #     'wsgi.multiprocess': event['wsgi.multiprocess'],
+        #     'wsgi.multithread': event['wsgi.multithread'],
+        #     'wsgi.run_once': event['wsgi.run_once'],
+        #     'REQUEST_METHOD': event['REQUEST_METHOD'],
+        #     'SCRIPT_NAME': event['SCRIPT_NAME'],
+        #     'PATH_INFO': event['PATH_INFO'],
+        #     'QUERY_STRING': event['QUERY_STRING'],
+        #     'SERVER_NAME': event['SERVER_NAME'],
+        #     'SERVER_PORT': event['SERVER_PORT'],
+        #     'SERVER_PROTOCOL': event['SERVER_PROTOCOL'],
+        #     'HTTP_ACCEPT': event['HTTP_ACCEPT'],
+        #     'HTTP_ACCEPT_ENCODING': event['HTTP_ACCEPT_ENCODING'],
+        #     'HTTP_USER_AGENT': event['HTTP_USER_AGENT']
+        #     # Add more relevant headers as needed
+        # }
 
         # Log information
         logging.info("The Lambda function-generated EVENT HAS BEEN SUCCESSFULLY PARSED : %s", event)
