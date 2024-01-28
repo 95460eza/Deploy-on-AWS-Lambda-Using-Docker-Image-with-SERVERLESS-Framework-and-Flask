@@ -35,7 +35,7 @@ def lambda_handler(event, context):
         # wsgi_env = event.get('wsgi_environ', {})
         # wsgi_env = event['wsgi_environ']
         wsgi_env = {
-            '-': event['wsgi.version'],
+            'wsgi.version': event['wsgi.version'],
             'wsgi.url_scheme': event['wsgi.url_scheme'],
             'wsgi.input': event['wsgi.input'],
             'wsgi.errors': event['wsgi.errors'],
