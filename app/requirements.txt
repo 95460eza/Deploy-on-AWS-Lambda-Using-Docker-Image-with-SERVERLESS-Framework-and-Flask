@@ -1,0 +1,6 @@
+flask
+numpy
+#Werkzeug
+#scikit-learn
+#pytest
+#pandas

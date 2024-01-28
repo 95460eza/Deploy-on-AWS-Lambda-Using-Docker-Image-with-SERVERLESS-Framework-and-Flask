@@ -1,0 +1,101 @@
+name: Pipeline to Publish Docker Image to AWS ECR and SAM deploy steps on "git push"
+
+on:
+  push:
+    branches:
+      - 'main'
+      - 'feature**'
+
+jobs:
+
+#name: Publish Docker Image to AWS ECR
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - name: Login to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build and Push Docker Image
+        run: |
+          # NOTE: CHANGE below "repository-for-docker-images:mangum10" with BOTH the ACTUAL AWS ECR repository name that will containt the Docker Image AND the ACTUAL Image name
+          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_DEFAULT_REGION }}.amazonaws.com/repository-for-docker-images:basicflaskapp .
+          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_DEFAULT_REGION }}.amazonaws.com/repository-for-docker-images:basicflaskapp
+
+#name: Build and Deploy Lambda Function
+  build-and-deploy:
+    needs: publish 
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-region: ${{ secrets.AWS_DEFAULT_REGION }}
+
+      - name: Login to AWS ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+        # Serverless requires ALL the PYTHON libraries from "requirements.txt" be INSTALLED
+        # STEP 1: INSTALL PYTHON
+#      - name: Set up Python
+#        uses: actions/setup-python@v2
+#        with:
+          #python-version: '3.11'
+#          python-version: '3.9'
+
+         # STEP 2: Create Virtual environment to run PYTHON commands
+#      - name: Create and activate virtual environment
+#        run: |
+#          python -m venv venv
+#          source venv/bin/activate
+
+        # INSTALL HERE ALL the libraries from "requirements.txt"
+#      - name: INSTALL HERE ALL the libraries from requirements.txt
+#        run: |
+#          source venv/bin/activate  # Activate the virtual environment
+#          pip install --upgrade pip
+          #pip install flask
+#          pip install -r requirements.txt
+
+        # The Serverless Framework being a Node.js application requires it to be present!!
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+         # OPTIONAL: Install npm -  When you install a specific version of Node.js as above, it typically includes a compatible version of npm.
+#      - name: Install npm
+#        run: |
+#          npm install -g npm@10.3.0
+          
+        # Install Serverless Framework
+      - name: Install Serverless Framework
+        run: |
+          npm install -g serverless 
+          
+        # Deploy
+      - name: Deploy to AWS Lambda with Serverless
+        run: |               
+          serverless deploy
+
+
