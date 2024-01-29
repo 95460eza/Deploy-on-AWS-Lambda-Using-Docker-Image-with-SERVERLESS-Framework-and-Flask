@@ -31,4 +31,5 @@ COPY app/   ${LAMBDA_TASK_ROOT}
 # You don't need the CMD ["app.lambda_handler"] in your Dockerfile when deploying a Flask application with "SERVERLESS FRAMEWORK".
 # The Serverless Framework is designed to handle the execution of serverless functions and doesn't rely on Docker's CMD for specifying the command to run.
 # Specify rather SERVERLESS FRAMEWORK configurations in the "serverless.yml" file!!!!!!!!!!!!!!
-CMD [ "app.lambda_handler" ]
+#CMD [ "app.lambda_handler" ]
+CMD [ "lambda_handler" ]
