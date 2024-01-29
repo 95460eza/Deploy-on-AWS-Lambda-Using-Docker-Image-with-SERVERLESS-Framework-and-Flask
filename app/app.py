@@ -36,15 +36,16 @@ def lambda_handler(event, context):
         # wsgi_env = event['wsgi_environ']
         wsgi_env = {
             # 'wsgi.version': event['wsgi.version'],
-            'wsgi.version': (1, 0),  # Use a default version
+            # Use a default version
+            'wsgi.version': (1, 0),
             'wsgi.url_scheme': event['headers']['CloudFront-Forwarded-Proto'],
             'REQUEST_METHOD': event['httpMethod'],
-            #'wsgi.input': event['body'],
+            'wsgi.input': event['body'],
 
             'SCRIPT_NAME': event['requestContext']['path'],
-            'PATH_INFO': event['path']
+            'PATH_INFO': event['path'],
             #'QUERY_STRING': event['queryStringParameters'], #
-            #'SERVER_NAME': event['headers']['Host'],
+            'SERVER_NAME': event['headers']['Host']
             #'SERVER_PORT': event['headers']['X-Forwarded-Port'],
             #'SERVER_PROTOCOL': event['headers']['X-Amzn-Trace-Id'],
             #'HTTP_ACCEPT': event['headers']['Accept'],
