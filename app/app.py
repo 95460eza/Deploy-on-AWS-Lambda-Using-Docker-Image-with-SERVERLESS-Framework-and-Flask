@@ -18,8 +18,8 @@ def index():
 
 
 # If you're running the App locally (not on AWS Lambda), you might want to start the Flask development server which is NOT suitable for a PRODUCTION environment like AWS Lambda
-#if __name__ == '__main__':
-    #flask_app.run(host='0.0.0.0', port=8000, debug=False)
+if __name__ == '__main__':
+    flask_app.run(host='0.0.0.0', port=8000, debug=False)
     # flask_app.run()
 
 # AWS Lambda when used with the "SERVERLESS FRAMEWORK" EXPECTS to interfaces with WSGI (Web Server Gateway Interface) compatible applications. The Flask .wsgi_app() METHOD
@@ -41,8 +41,8 @@ def lambda_handler(event, context):
             'REQUEST_METHOD': event['httpMethod'],
             'SCRIPT_NAME': event['requestContext']['path'],
             'PATH_INFO': event['path'],
-            'QUERY_STRING': event.get('queryStringParameters', ''),
-            #'QUERY_STRING': {"foo": "bar"},
+            #'QUERY_STRING': event.get('queryStringParameters', ''),
+            #'QUERY_STRING': event['queryStringParameters'],
             'SERVER_NAME': event['headers']['Host'],
             'SERVER_PORT': event['headers']['X-Forwarded-Port'],
             'SERVER_PROTOCOL': event['headers']['X-Amzn-Trace-Id'],

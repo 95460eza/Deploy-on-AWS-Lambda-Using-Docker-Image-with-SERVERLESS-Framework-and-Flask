@@ -22,37 +22,33 @@ def index():
     #flask_app.run(host='0.0.0.0', port=8000, debug=False)
     # flask_app.run()
 
-
-
 # AWS Lambda when used with the "SERVERLESS FRAMEWORK" EXPECTS to interfaces with WSGI (Web Server Gateway Interface) compatible applications. The Flask .wsgi_app() METHOD
 # returns a WSGI application as the correct interface type.
 
-# body = "PAPA0"
+body = "PAPA0" 
 
 def lambda_handler(event, context):
 
     try:
-        # wsgi_env = event.get('wsgi_environ', {})
-        # wsgi_env = event['wsgi_environ']
         wsgi_env = {
-            # 'wsgi.version': event['wsgi.version'],
-            # Use a default version
             'wsgi.version': (1, 0),
             'wsgi.url_scheme': event['headers']['CloudFront-Forwarded-Proto'],
             'wsgi.input': event['body'],
-            'REQUEST_METHOD': event.get('httpMethod', 'GET'),
+            'wsgi.errors': None,  # You can set this if needed
+            'wsgi.multiprocess': False,
+            'wsgi.multithread': False,
+            'wsgi.run_once': False,
+            'REQUEST_METHOD': event['httpMethod'],
             'SCRIPT_NAME': event['requestContext']['path'],
-            'PATH_INFO': event.get('path', '/'),
+            'PATH_INFO': event['path'],
             'QUERY_STRING': event.get('queryStringParameters', ''),
+            #'QUERY_STRING': {"foo": "bar"},
             'SERVER_NAME': event['headers']['Host'],
             'SERVER_PORT': event['headers']['X-Forwarded-Port'],
             'SERVER_PROTOCOL': event['headers']['X-Amzn-Trace-Id'],
             'HTTP_ACCEPT': event['headers']['Accept'],
             'HTTP_ACCEPT_ENCODING': event['headers']['Accept-Encoding'],
             'HTTP_USER_AGENT': event['headers']['User-Agent']
-            #'CONTENT_TYPE': event['headers'].get('Content-Type', ''),
-            #'CONTENT_LENGTH': event['headers'].get('Content-Length', '')
-
             # Add more relevant headers as needed
         }
 
@@ -60,7 +56,6 @@ def lambda_handler(event, context):
         logging.info("The Lambda function-generated EVENT HAS BEEN SUCCESSFULLY PARSED : %s", event)
 
         # Call the Flask app with the translated environment
-        #flask_response = flask_app.wsgi_app(wsgi_env, lambda response, start_response: "None")
         flask_response = flask_app.wsgi_app(wsgi_env, lambda response, start_response: None)
         # flask_response = ClosingIterator(flask_app.wsgi_app(wsgi_env, lambda response, start_response: None))
 
