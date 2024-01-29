@@ -42,7 +42,7 @@ def lambda_handler(event, context):
             'SCRIPT_NAME': event['requestContext']['path'],
             'PATH_INFO': event['path'],
             #'QUERY_STRING': event.get('queryStringParameters', ''),
-            #'QUERY_STRING': event['queryStringParameters'],
+            'QUERY_STRING': {"foo": "bar"},
             'SERVER_NAME': event['headers']['Host'],
             'SERVER_PORT': event['headers']['X-Forwarded-Port'],
             'SERVER_PROTOCOL': event['headers']['X-Amzn-Trace-Id'],
@@ -56,7 +56,6 @@ def lambda_handler(event, context):
         logging.info("The Lambda function-generated EVENT HAS BEEN SUCCESSFULLY PARSED : %s", event)
 
         # Call the Flask app with the translated environment
-        #flask_response = flask_app.wsgi_app(wsgi_env, lambda response, start_response: "None")
         flask_response = flask_app.wsgi_app(wsgi_env, lambda response, start_response: None)
         # flask_response = ClosingIterator(flask_app.wsgi_app(wsgi_env, lambda response, start_response: None))
 

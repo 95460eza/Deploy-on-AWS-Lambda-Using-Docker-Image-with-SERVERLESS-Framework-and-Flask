@@ -94,7 +94,7 @@ jobs:
           npm install -g serverless 
 
         # Install WSGI PLUGIN for Serverless Framework
-      - name: Install Serverless Framework
+      - name: Install WSGI PLUGIN for Serverless Framework
         run: |
           npm install serverless-wsgi
 
