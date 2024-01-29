@@ -48,7 +48,7 @@ def lambda_handler(event, context):
             'QUERY_STRING': event['queryStringParameters'],
             'SERVER_NAME': event['headers']['Host'],
             'SERVER_PORT': event['headers']['X-Forwarded-Port'],
-            'SERVER_PROTOCOL': event['SERVER_PROTOCOL'],
+            #'SERVER_PROTOCOL': event['SERVER_PROTOCOL'],
             'HTTP_ACCEPT': event['headers']['Accept'],
             'HTTP_ACCEPT_ENCODING': event['headers']['Accept-Encoding'],
             'HTTP_USER_AGENT': event['headers']['User-Agent']
