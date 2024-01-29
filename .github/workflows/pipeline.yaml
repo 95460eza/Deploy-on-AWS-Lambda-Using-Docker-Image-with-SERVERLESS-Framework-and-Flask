@@ -88,14 +88,18 @@ jobs:
 #        run: |
 #          npm install -g npm@10.3.0
           
-        # Install Serverless Framework AND its WSGI PLUGIN
+        # Install Serverless Framework
       - name: Install Serverless Framework
         run: |
           npm install -g serverless 
+
+        # Install WSGI PLUGIN for Serverless Framework
+      - name: Install Serverless Framework
+        run: |
           npm install serverless-wsgi
 
           
-        # Deploy
+        # Deployment Stage
       - name: Deploy to AWS Lambda with Serverless
         run: |               
           serverless deploy
