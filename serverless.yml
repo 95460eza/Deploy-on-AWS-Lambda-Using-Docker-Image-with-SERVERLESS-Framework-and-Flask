@@ -48,12 +48,12 @@ functions:
     # path parameter, and proxy+ is a wildcard that matches any path and captures it as a parameter named proxy. With this configuration, your Lambda function will be triggered
     # for any HTTP request under the base path specified (/ in this case). The ACTUAL route information will be available as a parameter in your Lambda function (event.pathParameters.proxy).
     # If your App routes start with /api, you can use path: /api/{proxy+}
-    events:
-      - http:
-          path: /
-          #path: /{proxy+}
-          method: ANY
-          cors: true
+#    events:
+#      - http:
+#          path: /
+#          #path: /{proxy+}
+#          method: ANY
+#          cors: true
 
     # The ports parameter HERE specifies the ports to be EXPOSED IN THE DOCKER CONTAINER when the Lambda function INSIDE is an application that listens on a specific port.
     # The left of ":" is the port of the host machine to use to access the App and the right is the port the application inside the container listens to (from the APP DEFINITION CODE).

@@ -39,9 +39,8 @@ def lambda_handler(event, context):
             # Use a default version
             'wsgi.version': (1, 0),
             'wsgi.url_scheme': event['headers']['CloudFront-Forwarded-Proto'],
-            'REQUEST_METHOD': event['httpMethod'],
             'wsgi.input': event['body'],
-
+            'REQUEST_METHOD': event['httpMethod'],
             'SCRIPT_NAME': event['requestContext']['path'],
             'PATH_INFO': event['path'],
             #'QUERY_STRING': event['queryStringParameters'], #
