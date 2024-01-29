@@ -42,7 +42,7 @@ def lambda_handler(event, context):
             #'wsgi.input': event['body'],
 
             'SCRIPT_NAME': event['requestContext']['path'],
-            #'PATH_INFO': event['path'],
+            'PATH_INFO': event['path']
             #'QUERY_STRING': event['queryStringParameters'], #
             #'SERVER_NAME': event['headers']['Host'],
             #'SERVER_PORT': event['headers']['X-Forwarded-Port'],

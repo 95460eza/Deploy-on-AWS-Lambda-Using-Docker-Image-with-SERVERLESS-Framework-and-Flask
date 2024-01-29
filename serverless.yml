@@ -50,7 +50,8 @@ functions:
     # If your App routes start with /api, you can use path: /api/{proxy+}
     events:
       - http:
-          path: /{proxy+}
+          path: /
+          #path: /{proxy+}
           method: ANY
           cors: true
 
