@@ -35,22 +35,23 @@ def lambda_handler(event, context):
         wsgi_env = {
             #'wsgi.version': event['wsgi.version'],
             'wsgi.version': (1, 0),
-            'wsgi.url_scheme': event['wsgi.url_scheme'],
-            'wsgi.input': event['wsgi.input'],
-            'wsgi.errors': event['wsgi.errors'],
-            'wsgi.multiprocess': event['wsgi.multiprocess'],
-            'wsgi.multithread': event['wsgi.multithread'],
-            'wsgi.run_once': event['wsgi.run_once'],
-            'REQUEST_METHOD': event['REQUEST_METHOD'],
-            'SCRIPT_NAME': event['SCRIPT_NAME'],
-            'PATH_INFO': event['PATH_INFO'],
-            'QUERY_STRING': event['QUERY_STRING'],
-            'SERVER_NAME': event['SERVER_NAME'],
-            'SERVER_PORT': event['SERVER_PORT'],
+            'wsgi.url_scheme': event['headers']['CloudFront-Forwarded-Proto'],
+            'wsgi.input': event['body'],
+            #'wsgi.errors': event['wsgi.errors'],
+            # 'wsgi.multiprocess': event['wsgi.multiprocess'],
+            # 'wsgi.multithread': event['wsgi.multithread'],
+            #'wsgi.run_once': event['wsgi.run_once'],
+            'wsgi.run_once': False,
+            'REQUEST_METHOD': event.get('httpMethod', 'GET'),
+            'SCRIPT_NAME': event['requestContext']['path'],
+            'PATH_INFO': event.get('path', '/'),
+            'QUERY_STRING': event['queryStringParameters'],
+            'SERVER_NAME': event['headers']['Host'],
+            'SERVER_PORT': event['headers']['X-Forwarded-Port'],
             'SERVER_PROTOCOL': event['SERVER_PROTOCOL'],
-            'HTTP_ACCEPT': event['HTTP_ACCEPT'],
-            'HTTP_ACCEPT_ENCODING': event['HTTP_ACCEPT_ENCODING'],
-            'HTTP_USER_AGENT': event['HTTP_USER_AGENT']
+            'HTTP_ACCEPT': event['headers']['Accept'],
+            'HTTP_ACCEPT_ENCODING': event['headers']['Accept-Encoding'],
+            'HTTP_USER_AGENT': event['headers']['User-Agent']
             # Add more relevant headers as needed
         }
 
