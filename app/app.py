@@ -43,7 +43,7 @@ def lambda_handler(event, context):
             'REQUEST_METHOD': event['httpMethod'],
             'SCRIPT_NAME': event['requestContext']['path'],
             'PATH_INFO': event['path'],
-            #'QUERY_STRING': event['queryStringParameters'], #
+            'QUERY_STRING': event['queryStringParameters'], #
             'SERVER_NAME': event['headers']['Host'],
             'SERVER_PORT': event['headers']['X-Forwarded-Port'],
             'SERVER_PROTOCOL': event['headers']['X-Amzn-Trace-Id'],
