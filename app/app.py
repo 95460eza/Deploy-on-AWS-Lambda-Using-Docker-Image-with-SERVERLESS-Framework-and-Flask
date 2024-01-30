@@ -30,39 +30,60 @@ def index():
 # returns a WSGI application as the correct interface type.
 def lambda_handler(event, context):
 
+        try:
+
+            # Create a WSGI-compatible environment from Lambda event
+            env = {
+                'wsgi.version': (1, 0),
+                'wsgi.input': event['body'],
+                'wsgi.url_scheme': 'https',
+                'REQUEST_METHOD': event['httpMethod'],
+                'SERVER_PROTOCOL': 'HTTP/1.1',
+                'HTTP_ACCEPT': event['headers'].get('Accept', ''),
+                'HTTP_ACCEPT_ENCODING': event['headers'].get('Accept-Encoding', ''),
+                'HTTP_USER_AGENT': event['headers'].get('User-Agent', ''),
+                'PATH_INFO': event['path'],
+                'QUERY_STRING': event['queryStringParameters'] or '',
+                'CONTENT_TYPE': event['headers'].get('Content-Type', ''),
+                'CONTENT_LENGTH': event['headers'].get('Content-Length', '0'),
+                'SERVER_NAME': event['requestContext']['domainName'],
+                'SERVER_PORT': '443',
+                'SCRIPT_NAME': '',
+                'wsgi.errors': None,  # You might want to set this to a log file or similar
+                'wsgi.multiprocess': False,
+                'wsgi.multithread': False,
+                'wsgi.run_once': False
+                # Add more headers as needed
+            }
+
+            # Log information
+            logging.info(f"AWS Lambda-generated ENVENT SUCESSFULLY PARSED: %s", event)
+
+            # Call the Flask app with the translated environment
+            with flask_app.request_context(env):
+                response = flask_app.dispatch_request()
+
+            # Return the response
+            return {
+                'statusCode': response.status_code,
+                'body': response.get_data(),
+                'headers': dict(response.headers),
+            }
+
+        except Exception as e:
+
+            # Log the exception
+            logging.info("Lambda Event: %s", event)
+            logging.error("An error HAS occurred: %s", event)
+            logging.error("An error HAS occurred: %s", str(e))
+
+            # Handle exceptions and return an error response if needed
+            return {
+                'statusCode': 850,
+                'body': f'Error: {str(e)}'
+            }
+
+
     # Create a WSGI-compatible environment from Lambda event
-    env = {
-        'wsgi.version': (1, 0),
-        'wsgi.input': event['body'],
-        'wsgi.url_scheme': 'https',
-        'REQUEST_METHOD': event['httpMethod'],
-        'SERVER_PROTOCOL': 'HTTP/1.1',
-        'HTTP_ACCEPT': event['headers'].get('Accept', ''),
-        'HTTP_ACCEPT_ENCODING': event['headers'].get('Accept-Encoding', ''),
-        'HTTP_USER_AGENT': event['headers'].get('User-Agent', ''),
-        'PATH_INFO': event['path'],
-        'QUERY_STRING': event['queryStringParameters'] or '',
-        'CONTENT_TYPE': event['headers'].get('Content-Type', ''),
-        'CONTENT_LENGTH': event['headers'].get('Content-Length', '0'),
-        'SERVER_NAME': event['requestContext']['domainName'],
-        'SERVER_PORT': '443',
-        'SCRIPT_NAME': '',
-        'wsgi.errors': None,  # You might want to set this to a log file or similar
-        'wsgi.multiprocess': False,
-        'wsgi.multithread': False,
-        'wsgi.run_once': False
-        # Add more headers as needed
-    }
 
-    logging.info(f"AWS Lambda-generated ENVENT SUCESSFULLY PARSED: %s", event)
 
-    # Call the Flask app with the translated environment
-    with flask_app.request_context(env):
-        response = flask_app.dispatch_request()
-
-    # Return the response
-    return {
-        'statusCode': response.status_code,
-        'body': response.get_data(),
-        'headers': dict(response.headers),
-    }

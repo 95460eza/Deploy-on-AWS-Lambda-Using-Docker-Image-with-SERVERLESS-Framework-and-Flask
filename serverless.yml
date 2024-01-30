@@ -66,6 +66,12 @@ functions:
 plugins:
   - serverless-wsgi
 
+# "dockerizePip" is used to specify running "pip" inside the Docker container. If your Docker image is ALREADY stored in AWS ECR and don't need to be built, it is not needed!
+#custom:
+#  pythonRequirements:
+#    dockerizePip: non-linux
+#    dockerFile: ./Dockerfile
+
     # The ports parameter HERE specifies the ports to be EXPOSED IN THE DOCKER CONTAINER when the Lambda function INSIDE is an application that listens on a specific port.
     # The left of ":" is the port of the host machine to use to access the App and the right is the port the application inside the container listens to (from the APP DEFINITION CODE).
     # DIFFERENT from "EXPOSE in Dockerfile" that is used to inform Docker that the container will listen (receive requests) on which ports at runtime. That does not actually publish the 
