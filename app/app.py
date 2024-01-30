@@ -29,7 +29,7 @@ body = "PAPA0"
 
 def lambda_handler(event, context):
     # Your custom handling logic here
-    logging.info("HANDLER function reached)
+    logging.info("HANDLER function reached")
     logging.info("Lambda Event: %s", event)
     return flask_app(event, context)
 
