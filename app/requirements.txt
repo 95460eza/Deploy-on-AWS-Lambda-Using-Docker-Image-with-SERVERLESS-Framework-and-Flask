@@ -1,6 +1,6 @@
-flask
 numpy
-#Werkzeug
+flask
+werkzeug
 #scikit-learn
 #pytest
 #pandas
