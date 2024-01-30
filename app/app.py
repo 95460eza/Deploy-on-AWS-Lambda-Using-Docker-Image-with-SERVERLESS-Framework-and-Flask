@@ -36,7 +36,7 @@ def lambda_handler(event, context):
             env = {
                 'wsgi.version': (1, 0),
                 'wsgi.input': event['body'],
-                'wsgi.url_scheme': 'https',
+                #'wsgi.url_scheme': 'https',
                 'REQUEST_METHOD': event['httpMethod'],
                 'SERVER_PROTOCOL': 'HTTP/1.1',
                 'HTTP_ACCEPT': event['headers'].get('Accept', ''),
