@@ -18,7 +18,6 @@ def index():
     return jsonify(message='NATOU est tu la? FINALEMENT Manifeste toi DONC !!')
 
 
-
 # ONLY If you're running the App locally (not on AWS Lambda), you might want to start the Flask development server. OTHERWISE it is NOT suitable for a PRODUCTION environment like
 # AWS Lambda!
 # if __name__ == '__main__':
