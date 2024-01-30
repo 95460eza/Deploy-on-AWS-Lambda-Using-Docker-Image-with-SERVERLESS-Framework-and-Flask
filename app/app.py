@@ -19,9 +19,9 @@ def index():
 
 
 # If you're running the App locally (not on AWS Lambda), you might want to start the Flask development server which is NOT suitable for a PRODUCTION environment like AWS Lambda
-if __name__ == '__main__':
-    flask_app.run(host='0.0.0.0', port=8000, debug=False)
-    # flask_app.run()
+# if __name__ == '__main__':
+#     flask_app.run(host='0.0.0.0', port=8000, debug=False)
+#     flask_app.run()
 
 # AWS Lambda when used with the "SERVERLESS FRAMEWORK" EXPECTS to interfaces with WSGI (Web Server Gateway Interface) compatible applications. The Flask .wsgi_app() METHOD
 # returns a WSGI application as the correct interface type.
@@ -29,8 +29,9 @@ if __name__ == '__main__':
 body = "PAPA0"
 
 def lambda_handler(event, context):
+
     # Create a WSGI-compatible environment from Lambda event
-    environ = {
+    env = {
         'REQUEST_METHOD': event['httpMethod'],
         'SCRIPT_NAME': '',
         'PATH_INFO': event['path'],
@@ -43,7 +44,6 @@ def lambda_handler(event, context):
         'wsgi.version': (1, 0),
         'wsgi.url_scheme': 'https',
         'wsgi.input': event['body'],
-        #'wsgi.input': Request(event).stream,
         'wsgi.errors': None,  # You might want to set this to a log file or similar
         'wsgi.multiprocess': False,
         'wsgi.multithread': False,
@@ -57,7 +57,7 @@ def lambda_handler(event, context):
     logging.info(f"AWS Lambda-generated ENVENT SUCESSFULLY PARSED: %s", event)
 
     # Call the Flask app with the translated environment
-    with flask_app.request_context(environ):
+    with flask_app.request_context(env):
         response = flask_app.dispatch_request()
 
     # Return the response
@@ -66,6 +66,8 @@ def lambda_handler(event, context):
         'body': response.get_data(),
         'headers': dict(response.headers),
     }
+
+
 
 # def lambda_handler(event, context):
 #
