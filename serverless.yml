@@ -48,12 +48,12 @@ functions:
     # path parameter, and proxy+ is a wildcard that matches any path and captures it as a parameter named proxy. With this configuration, your Lambda function will be triggered
     # for any HTTP request under the base path specified (/ in this case). The ACTUAL route information will be available as a parameter in your Lambda function (event.pathParameters.proxy).
     # If your App routes start with /api, you can use path: /api/{proxy+}
-    events:
-      - http:
-          #path: /
-          path: /{proxy+}
-          method: ANY
-          cors: true
+#    events:
+#      - http:
+#          path: /
+#          path: /{proxy+}
+#          method: ANY
+#          cors: true
 
 
 #This plugin helps to convert the API Gateway event format into a format that your Flask app can understand.
