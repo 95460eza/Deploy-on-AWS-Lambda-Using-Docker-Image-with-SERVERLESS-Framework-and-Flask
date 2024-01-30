@@ -1,6 +1,7 @@
 
 import logging
 from flask import Flask, jsonify
+from werkzeug.wrappers import Request
 from werkzeug.wsgi import ClosingIterator
 
 
@@ -28,10 +29,40 @@ if __name__ == '__main__':
 body = "PAPA0"
 
 def lambda_handler(event, context):
-    # Your custom handling logic here
-    logging.info("HANDLER function reached")
-    logging.info("Lambda Event: %s", event)
-    return flask_app(event, context)
+    # Create a WSGI-compatible environment from Lambda event
+    environ = {
+        'REQUEST_METHOD': event['httpMethod'],
+        'SCRIPT_NAME': '',
+        'PATH_INFO': event['path'],
+        'QUERY_STRING': event['queryStringParameters'] or '',
+        'CONTENT_TYPE': event['headers'].get('Content-Type', ''),
+        'CONTENT_LENGTH': event['headers'].get('Content-Length', '0'),
+        'SERVER_NAME': event['requestContext']['domainName'],
+        'SERVER_PORT': '443',
+        'SERVER_PROTOCOL': 'HTTP/1.1',
+        'wsgi.version': (1, 0),
+        'wsgi.url_scheme': 'https',
+        'wsgi.input': Request(event).stream,
+        'wsgi.errors': None,  # You might want to set this to a log file or similar
+        'wsgi.multiprocess': False,
+        'wsgi.multithread': False,
+        'wsgi.run_once': False,
+        'HTTP_ACCEPT': event['headers'].get('Accept', ''),
+        'HTTP_ACCEPT_ENCODING': event['headers'].get('Accept-Encoding', ''),
+        'HTTP_USER_AGENT': event['headers'].get('User-Agent', ''),
+        # Add more headers as needed
+    }
+
+    # Call the Flask app with the translated environment
+    with flask_app.request_context(environ):
+        response = flask_app.dispatch_request()
+
+    # Return the response
+    return {
+        'statusCode': response.status_code,
+        'body': response.get_data(),
+        'headers': dict(response.headers),
+    }
 
 # def lambda_handler(event, context):
 #
