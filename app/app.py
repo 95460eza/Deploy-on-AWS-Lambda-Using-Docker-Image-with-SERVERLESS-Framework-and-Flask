@@ -42,7 +42,8 @@ def lambda_handler(event, context):
         'SERVER_PROTOCOL': 'HTTP/1.1',
         'wsgi.version': (1, 0),
         'wsgi.url_scheme': 'https',
-        'wsgi.input': Request(event).stream,
+        'wsgi.input': event['body'],
+        #'wsgi.input': Request(event).stream,
         'wsgi.errors': None,  # You might want to set this to a log file or similar
         'wsgi.multiprocess': False,
         'wsgi.multithread': False,
@@ -52,6 +53,8 @@ def lambda_handler(event, context):
         'HTTP_USER_AGENT': event['headers'].get('User-Agent', ''),
         # Add more headers as needed
     }
+
+    logging.info(f"AWS Lambda-generated ENVENT SUCESSFULLY PARSED: %s", event)
 
     # Call the Flask app with the translated environment
     with flask_app.request_context(environ):
