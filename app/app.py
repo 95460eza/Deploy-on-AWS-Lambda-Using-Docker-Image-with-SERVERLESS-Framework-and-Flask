@@ -41,7 +41,6 @@ def lambda_handler(event, context):
         },
     }
 
-
 # def lambda_handler(event, context):
 #
 #     # Create a WSGI-compatible environment from Lambda event
